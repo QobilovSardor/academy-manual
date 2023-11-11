@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "npx vuepress dev",
+		"dev": "npx vuepress dev",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },

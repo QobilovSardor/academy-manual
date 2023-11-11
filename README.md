@@ -10,13 +10,13 @@ npm install
 ## Project Run
 
 ```js
-npx run dev
+npx vuepress dev
 ```
 
 ## Project Build
 
 ```js
-npx run build
+npx vuepress build
 ```
 
 
