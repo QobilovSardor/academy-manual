@@ -268,8 +268,11 @@ console.log(country.substring(3, 7))   // land
 console.log(country.substring(3))      // land
 ```
 
-7. *split()*: Split methodi qatorni belgilangan joydan ajratadi.
-
+7. *split()*: 
+split metodining sintaksi quyidagicha:
+```js
+string.split(separator, limit)
+```
 ```js
 let string = '30 Days Of JavaScript'
 
@@ -287,7 +290,7 @@ console.log(countries.split(','))  // vergul orqali satrni massivga bo'lib tashl
 console.log(countries.split(', ')) //  ["Finland", "Sweden", "Norway", "Denmark", "and Iceland"]
 ```
 
-8. *trim()*: Satrning boshida yoki oxiridagi bo'sh joyni olib tashlaydi.
+1. *trim()*: Satrning boshida yoki oxiridagi bo'sh joyni olib tashlaydi.
 
 ```js
 let string = '   30 Days Of JavaScript   '
@@ -978,36 +981,45 @@ console.log(webTechs.join(' # '))  // "HTML # CSS # JavaScript # React # Redux #
 
 #### Massiv elementlarini kesish
 
-Slice: diapazondagi bir nechta elementlarni kesish uchun. Bu ikkita parametrni oladi: boshlang'ich va tugatish pozitsiyasi. U yakuniy pozitsiyani o'z ichiga olmaydi.
+slice: JavaScript massivlari (arrays) va stringlari ustida ishlatiladigan metodlardan biridir. U, berilgan indeks oraliqni (interval) o'z ichiga oladi va yangi massiv yoki stringni qaytaradi. slice metodining sintaksi quyidagicha:
+```js
+array.slice(startIndex, endIndex)
+```
+Bu metodning startIndex va endIndex argumentlari o'z ichiga olgan intervalni bildiradi. startIndexdan boshlab endIndexgacha bo'lgan interval o'z ichiga oladi (lekin endIndex kiritilmagan holatda massivning oxirigacha olib boradi). Asl massiv o'zgarmaydi, balki yangi bir massivni qaytaradi.
 
 ```js
-  const numbers = [1,2,3,4,5]
-
-  console.log(numbers.slice()) // -> u barcha elementlarni nusxalab ko'chiradi
-  console.log(numbers.slice(0)) // -> u barcha elementlarni nusxalab ko'chiradi
-  console.log(numbers.slice(0, numbers.length)) // u barcha elementlarni nusxalab ko'chiradi
-  console.log(numbers.slice(1,4)) // -> [2,3,4] // u yakuniy pozitsiyani o'z ichiga olmaydi
+const numbers = [1, 2, 3, 4, 5];
+const slicedNumbers = numbers.slice(1, 4);
+console.log(slicedNumbers); // [2, 3, 4]
 ```
 
 #### Massivni tarkibini o'zgartirish usuli
 
-Splice: Bu uchta parametrni oladi: Boshlang'ich pozitsiyasi, olib tashlanadigan martalar soni va qo'shiladigan elementlar soni.
+splice: JavaScript massivlarida (arrays) ishlatiladigan bir metoddir. Bu metod, massivning istalgan joyidan boshlab belgilangan miqdorda elementni o'chiradi yoki boshqa elementlarni qo'shadi. splice metodining sintaksi quyidagicha:
 
 ```js
-  const numbers = [1, 2, 3, 4, 5]
+array.splice(startIndex, deleteCount, item1, item2, ...)
+```
+1. startIndex: Boshlanishi kerak bo'lgan indeks.
+2. deleteCount: O'chirilishi kerak bo'lgan elementlar soni.
+3. item1, item2, ...: Qo'shiladigan yangi elementlar (agar ular ko'rsatilgan bo'lsa).
+splice metodining boshqa muhim xususiyati, boshqa bir massivni qaytarmasidan kelib chiqqan yangi bir massivni o'z ichiga oladi.
 
-  console.log(numbers.splice())                // -> barcha elementlarni olib tashlang
+Quyidagi misollar splice metodini ko'rsatish uchun:
+
+```js
+const numbers = [1, 2, 3, 4, 5];
+numbers.splice(2, 2); // 2-indeksdan boshlab 2 ta elementni o'chirish
+console.log(numbers); // [1, 2, 5]
 
 ```
 
 ```js
-  const numbers = [1, 2, 3, 4, 5]
-  console.log(numbers.splice(0,1))            // birinchi elementni olib tashlang
-```
+const numbers = [1, 2, 3, 4, 5];
+const deletedNumbers = numbers.splice(1, 2, 6, 7);
 
-```js
-  const numbers = [1, 2, 3, 4, 5, 6];
-  console.log(numbers.splice(3, 3, 7, 8, 9))  // -> [1, 2, 3, 7, 8, 9] // u uchta elementni olib tashlaydi va uchta elementni almashtiradi
+console.log(numbers);        // Asl massiv o'zgardi: [1, 6, 7, 4, 5]
+console.log(deletedNumbers); // O'chirilgan elementlar: [2, 3]
 ```
 
 #### Push yordamida massivga element qo'shish

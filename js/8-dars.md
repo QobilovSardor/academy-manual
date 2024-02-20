@@ -1,10 +1,8 @@
 
 # 📔 8-dars
 
-## Qo'llanish doirasi
+## Global and local variable scope(Qo'llanish doirasi)
 
-O'zgaruvchi dasturlashning asosiy qismidir. Biz turli xil ma'lumotlar turlarini saqlash uchun o'zgaruvchini e'lon qilamiz. O'zgaruvchini e'lon qilish uchun var , let va const kalit so'zidan foydalanamiz . O'zgaruvchi turli sohalarda e'lon qilinishi mumkin. Ushbu bo'limda biz var yoki let dan foydalanganda o'zgaruvchilar doirasi, qamrovini ko'ramiz.
-O'zgaruvchilar doirasi quyidagilar bo'lishi mumkin:
 
 - Window
 - Global
@@ -431,6 +429,15 @@ const higherOrder = n => {
 }
 console.log(higherOrder(2)(3)(10))
 ```
+higherOrder - bu yuqori tartibdagi funksiya, uning parametri n. U doSomething funksiyasini qaytaradi.
+doSomething - bu ham yuqori tartibdagi funksiya, uning parametri m. U esa doWhatEver funksiyasini qaytaradi.
+doWhatEver - bu ham yuqori tartibdagi funksiya, uning parametri t. U esa 2 * n + 3 * m + t formulasi bilan hisoblashni amalga oshiradi.
+Yuqoridagi funksiyalar ketma-ketligi natijasida, o'zgartirilgan qiymatlarni qabul qilib, doWhatEver funksiyasini chaqirish orqali o'z ichiga olgan formulani hisoblaydi. Natijada, higherOrder(2)(3)(10) qilganda 2, 3 va 10 qiymatlari orqali hisoblangan natija 23 bo'ladi.
+
+n qiymati 2 ga teng.
+m qiymati 3 ga teng.
+t qiymati 10 ga teng.
+Shu bilan, 2 * 2 + 3 * 3 + 10 formulasi natijasida 23 chiqadi. Natijada, higherOrder(2)(3)(10) ifodasi 23 ga teng bo'ladi.
 
 Callback funksiyalaridan foydalanganimizni ko'rib chiqaylik. Masalan, _**forEach**_ methodi qayta `callback`dan foydalanadi.
 
@@ -654,29 +661,65 @@ const countriesFirstThreeLetters = countries.map((country) =>
  ["ALB", "BOL", "CAN", "DEN", "ETH", "FIN", "GER", "HUN", "IRE", "JAP", "KEN"]
 ```
 
+**forEach va map massiv elementlari bilan ishlashda foydalaniladigan JavaScript array metodlari. Ularning farqini quyidagicha:**
+Map yangi massiv qaytaradi eski massivni qiymatini o'zgartirib 
+**Qaytari:**
+
+forEach: Bu metod undefined qaytaradi. U bitta elementni chaqiradi va biror nima qaytarmaydi.
+map: Bu metod yangi bir array yaratadi va har bir element uchun callback funksiyasi qaytargan qiymatlarni yangi array elementlari sifatida o'z ichiga oladi.
+
+**Qo'llanish:**
+
+forEach: Bu metod asosan bir operatsiya uchun ishlatiladi, masalan, ekranga chiqarish yoki qaysi elementlarda qanday amaliyot bajarilishi kerakligini aniqlash uchun.
+map: Bu metod esa yangi bir array yaratish uchun ishlatiladi, bu array orqali amaliyot bajarilgan natijani qaytaradi.
+
+```js
+// forEach
+const numbers = [1, 2, 3, 4];
+
+const result = numbers.forEach(function(element, index) {
+  console.log(`Element: ${element}, Index: ${index}`);
+});
+
+console.log(result); //  Output: undefined
+
+// map
+const doubledNumbers = numbers.map(function(element, index) {
+  return element * 2;
+});
+console.log(doubledNumbers); // Output: [2, 4, 6, 8]
+
+```
+
 ### filter
 
-_Filter_: Filtrlash shartlarini to'liq to'ldiradigan elementlarni filtrlang va yangi massivni qaytaring.
+_Filter_: filter JavaScript array metodidir va u massivni filtirlash uchun ishlatiladi. filter metodining asosiy maqsadi, berilgan shartlarni qondirish orqali massivni yangi massivga filtrlash va shartga mos keladigan elementlarni olishdir.
 
 ```js
-//Filter countries containing land
-const countriesContainingLand = countries.filter((country) =>
-  country.includes('land')
-)
-console.log(countriesContainingLand)
+const numbers = [1, 2, 3, 4, 5, 6];
+
+// Odd numbers ni olish
+const oddNumbers = numbers.filter(function(element) {
+  return element % 2 !== 0;
+});
+
+console.log(oddNumbers); 
 ```
 
 ```sh
-['Finland', 'Ireland']
+// [1, 3, 5]
 ```
 
 ```js
-const countriesEndsByia = countries.filter((country) => country.endsWith('ia'))
-console.log(countriesEndsByia)
+const countries = ['Albania', 'Argentina', 'Australia', 'Austria', 'Bulgaria', 'Cambodia', 'India', 'Hitoy', 'Jamaica', 'Japan', 'Korea'];
+
+const countriesEndsByia = countries.filter((country) => country.endsWith('ia'));
+
+console.log(countriesEndsByia);
 ```
 
 ```sh
-['Albania', 'Bolivia','Ethiopia']
+["Albania", "Australia", "Austria", "Bulgaria", "Cambodia", "India"]
 ```
 
 ```js
@@ -708,26 +751,50 @@ console.log(scoresGreaterEight)
 [{name: 'Asabeneh', score: 95}, { name: 'Lidiya', score: 98 },{name: 'Martha', score: 85},{name: 'John', score: 100}]
 ```
 
+<img src='./image-5.png' />
+
 ### reduce
 
-_reduce_: Reduction qayta qo'ng'iroq qilish funksiyasini oladi. Qayta qo'ng'iroq qilish funksiyasi parametr sifatida akkumulyator, joriy va ixtiyoriy boshlang'ich qiymatni oladi va bitta qiymatni qaytaradi. Akkumulyator qiymatining dastlabki qiymatini aniqlash yaxshi amaliyotdir. Agar biz ushbu parametrni aniqlamasak, sukut bo'yicha akkumulyator massivni oladi `first value`. Agar bizning massivimiz _bo'sh massiv_ bo'lsa, u `Javascript`holda xatoga yo'l qo'yadi.
-
 ```js
-arr.reduce((acc, cur) => {
-  // qiymatni qaytarishdan oldin ba'zi operatsiyalar shu yerda amalga oshiriladi
- return 
-}, initialValue)
-```
+const products = [
+  { name: "Olma", price: "12000" },
+  { name: "Anor", price: "20000" },
+  { name: "Banan", price: "30000" },
+  { name: "Olcha", price: "22000" },
+];
 
-```js
-const numbers = [1, 2, 3, 4, 5]
-const sum = numbers.reduce((acc, cur) => acc + cur, 0)
+// reduce(previousValue, curentValue, currentIndex, arr) qabul qiladi
+const products = [
+  { name: "Olma", price: 12000 },
+  { name: "Anor", price: 20000 },
+  { name: "Banan", price: 30000 },
+  { name: "Olcha", price: 22000 },
+];
 
-console.log(sum)
-```
+let sum = products.reduce((acumlator, curentValue) => {
+  return acumlator + curentValue.price
+}, 0);
+console.log(sum);
 
-```js
-15
+
+const items = [
+  { name: 'Apple', category: 'Fruit' },
+  { name: 'Onion', category: 'Vegetable' },
+  { name: 'Orange', category: 'Fruit' },
+  { name: 'Lettuce', category: 'Vegetable' },
+];
+
+const groupedItems = items.reduce((accumulator, item) => {
+  const category = item.category;
+  console.log(accumulator[category], 's')
+  if(!accumulator[category]){
+    accumulator[category] = []
+  }
+  accumulator[category].push(item.name)
+  return accumulator
+}, {})
+
+console.log(groupedItems);
 ```
 
 ### every

@@ -615,10 +615,6 @@ Uncaught TypeError: num.toLowerCase is not a function
 Bular kod yozishda duch kelishi mumkin bo'lgan keng tarqalgan xatolardir. Xatolarni tushunish sizga qanday xatolarga yo'l qo'yganingizni bilishingizga yordam beradi va kodingizni tezda disk raskadrovka qilishga yordam beradi.
 
 
-
-## Guvohlik
-Endi Muallif va 30DaysOfJavaScript haqidagi fikrlaringizni bildirish vaqti keldi. Siz o'z fikringizni [ushbu havolada](https://testimonify.herokuapp.com/) qoldirishingiz mumkin
-
 ## Masalalar
 1. FullName funksiyasini e'lon qiling va u sizning to'liq ismingizni chop etadi.
 

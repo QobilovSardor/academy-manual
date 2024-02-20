@@ -156,15 +156,52 @@ function printFullName(firstName, lastName) {
 console.log(printFullName('Asabeneh', 'Yetayeh'))
 ```
 
+### Spread operatori
+
+JavaScript'da spread operator (...) qo'llaniladigan usul, massivlar, obyektlar, va funksiya argumentlari bilan ishlashda osonlik qo'shadi va elementlarni nusxalash imkoniyatini beradi. Spread operatori, elementlarni, obyektlarni yoki massivlarni boshqa bir obyekt yoki massiv ichiga qo'shishda, qatorlarga bo'lishda yoki argumentlarni olishda juda foydali bo'ladi.
+
+##### Massivlarda ishlatilinishi
+```js
+const arr1 = [1, 2, 3];
+const arr2 = [...arr1, 4, 5, 6];
+
+console.log(arr2); // [1, 2, 3, 4, 5, 6]
+```
+##### Objectlarda ishlatilinishi
+```js
+const obj1 = { name: 'John', age: 25 };
+const obj2 = { ...obj1, city: 'New York' };
+
+console.log(obj2); // { name: 'John', age: 25, city: 'New York' }
+
+```
+##### Funksiya argumentlarida ishlatish:
+
+```js
+function sum(a, b, c) {
+  return a + b + c;
+}
+
+const numbers = [1, 2, 3];
+const result = sum(...numbers);
+
+console.log(result); // 6
+```
+
 ### Ko'p parametrli funksiya
 
 
 ```js
-// bir nechta parametrli funksiya
-function functionName(parm1, parm2, parm3,...){
-  //kod shu yerda 
+function exampleFunction(param1, param2, param3, ...restParams) {
+  // Misol uchun:
+  const sum = param1 + param2 + param3;
+  console.log('Sum:', sum);
+
+  console.log('Other parameters:', restParams);
 }
-functionName(parm1,parm2,parm3,...) // funksiyani chaqirish paytida 3 ta argument berish kerak
+
+exampleFunction(1, 2, 3, 4, 5, 6);
+
 
 
 // bu funksiya massivni parametr sifatida qabul qiladi va massiv funksiyasidagi raqamlar yig'indisini qaytaradi
@@ -613,11 +650,6 @@ Uncaught TypeError: num.toLowerCase is not a function
 ```
 
 Bular kod yozishda duch kelishi mumkin bo'lgan keng tarqalgan xatolardir. Xatolarni tushunish sizga qanday xatolarga yo'l qo'yganingizni bilishingizga yordam beradi va kodingizni tezda disk raskadrovka qilishga yordam beradi.
-
-
-
-## Guvohlik
-Endi Muallif va 30DaysOfJavaScript haqidagi fikrlaringizni bildirish vaqti keldi. Siz o'z fikringizni [ushbu havolada](https://testimonify.herokuapp.com/) qoldirishingiz mumkin
 
 ## Masalalar
 1. FullName funksiyasini e'lon qiling va u sizning to'liq ismingizni chop etadi.

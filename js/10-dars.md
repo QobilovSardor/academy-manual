@@ -208,10 +208,10 @@ console.log(width, height, area, perimeter) //30 10 200 80
 
 Funktsiya parametrlari sifatida kalitlarni destruksiya qilish. To'rtburchak ob'ektni oladigan va to'rtburchak perimetrini qaytaradigan funksiya yarataylik.
 
-### Ob'ekt parametri destrukturalashsiz
+### Ob'ekt parametri destruptizatsiya
 
 ```js
-// destrukturalashsiz
+// destruptizatsiya
 const rect = {
   width: 20,
   height: 10
@@ -245,7 +245,7 @@ const person = {
   ],
   languages: ['Amharic', 'English', 'Suomi(Finnish)']
 }
-// Keling destrukturalashsiz shaxs ob'ekti haqida ma'lumot beradigan funksiya yaratamiz
+// Keling destruptizatsiya shaxs ob'ekti haqida ma'lumot beradigan funksiya yaratamiz
 
 const getPersonInfo = obj => {
   const skills = obj.skills

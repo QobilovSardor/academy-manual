@@ -15,3 +15,4 @@ Todo list yasash
 4. HTML, CSS, JavaScript yordamida tab yasash
 5. HTML, CSS, JavaScript yordamida Slider yasash
 
+## Window, document bilan ishlash
