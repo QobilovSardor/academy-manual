@@ -3,7 +3,7 @@ import { docsearchPlugin } from "@vuepress/plugin-docsearch";
 
 export default defineUserConfig({
 	lang: "en-US",
-	title: "ABU IT HUB",
+	title: "Sadi Dev",
 	description: "Just playing around",
 	theme: defaultTheme({
 		navbar: [
