@@ -21,7 +21,7 @@ Grid elementining vertical chiziqlari `column(ustunlar)` deb ataladi
 
 <img src="./image-22.png" />
 
-### Grid Columns (Grid qatorlari)
+### Grid Rows (Grid qatorlari)
 
 Grid elementlarining gorizontal chiziqlari `rows(qatorlar)` deb ataladi .
 
@@ -34,14 +34,6 @@ Har bir **ustun/qator** orasidagi bo'shliqlar `gap` deb ataladi.
 <img src="./image-23.png" />
 
 #### 
-
-
-::: tip Quyidagi xususiyatlardan biri yordamida gap(bo'shliq) hajmini sozlashingiz mumkin:
-1. Katta harfda class yozmang
-2. Raqamlarda yozmang class
-3. 2ta so'zdan foydalansanggiz orasiga _ - bunday chiziqchalar qo'ying
-4. Contentdan kelib chiqib class berish harakat qiling
-:::
 
 ::: tip Misol
 Property (Xususiyat) `column-gap` ustunlar orasidagi bo'shliqni belgilaydi:
