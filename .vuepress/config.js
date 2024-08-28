@@ -139,6 +139,7 @@ export default defineUserConfig({
 						"11-lesson",
 						"12-lesson",
 						"Media-query",
+						"CSS-Advanced",
 					],
 				},
 			],
