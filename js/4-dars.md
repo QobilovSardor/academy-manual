@@ -257,31 +257,59 @@ string.substr(start, length);
 let text = "JavaScript";
 console.log(text.substr(4, 6)); // "Script"
 ```
+
 Ko‘p ishlatiladimi yoki kam?
-	•	Hozirgi zamonaviy JS’da kamroq ishlatiladi, chunki substr() ramsiy (deprecated) deb hisoblanadi.
+• Hozirgi zamonaviy JS’da kamroq ishlatiladi, chunki substr() ramsiy (deprecated) deb hisoblanadi.
 O‘rniga slice() yoki substring() tavsiya qilinadi.
 
-6. _substring()_: Bu ikkita argumentni oladi, boshlang'ich indeks va to'xtash indeksi, lekin u to'xtash indeksidagi belgini o'z ichiga olmaydi.
+6. _substring()_: JavaScript’dagi substring() metodi — matnning ma’lum boshlanish va tugash indekslari orasidagi qismini kesib olish uchun ishlatiladi.
 
 ```js
-let string = "JavaScript";
-
-console.log(string.substring(0, 4)); // Java
-console.log(string.substring(4, 10)); // Script
-console.log(string.substring(4)); // Script
-
-let country = "Finland";
-
-console.log(country.substring(0, 3)); // Fin
-console.log(country.substring(3, 7)); // land
-console.log(country.substring(3)); // land
+// Sintaksisi
+string.substring(startIndex, endIndex);
 ```
 
-7. _split()_:
-   split metodining sintaksi quyidagicha:
+• startIndex → qaysi indeksdan boshlab olish kerak (0 dan boshlanadi). <br>
+• endIndex → qaysi indeksgacha olish kerak (shu indeks kiradi emas, shu joygacha oladi). <br>
+Agar bu parametrni yozilmasa, matn oxirigacha oladi.
 
 ```js
+let text = "JavaScript";
+
+console.log(text.substring(0, 4)); // "Java"
+console.log(text.substring(4, 10)); // "Script"
+console.log(text.substring(4)); // "Script" (oxirigacha)
+```
+
+Xususiyai:
+manfiy qiymat berilsa, uni 0 deb oladi:
+
+```js
+console.log("Hello".substring(-2, 3)); // "Hel"
+```
+
+7. _split()_: JavaScript’dagi split() metodi — matnni belgilangan ajratuvchi (separator) bo‘yicha massivga bo‘lib beradi.
+
+```js
+// Sintaksis
 string.split(separator, limit);
+```
+
+• separator → qaysi belgiga qarab ajratish (masalan: " ", ",", "-", yoki hatto RegExp). <br>
+• limit (ixtiyoriy) → maksimal nechta element olish kerakligini belgilaydi.
+
+```js
+// MISOL:
+let text = "apple,banana,orange";
+
+console.log(text.split(","));
+// ["apple", "banana", "orange"]
+
+console.log(text.split(",", 2));
+// ["apple", "banana"]
+
+console.log(text.split(""));
+// ["a", "p", "p", "l", "e", ",", "b", "a", "n", "a", "n", "a", ",", "o", "r", "a", "n", "g", "e"]
 ```
 
 ```js
@@ -322,52 +350,70 @@ console.log(firstName.trim()); // hali ham satrning boshida va oxiridagi bo'shli
 Asabeneh
 ```
 
-9. _includes()_: U pastki qator argumentini oladi va u satrda pastki qator argumenti mavjudligini tekshiradi. include() mantiqiy qiymatni qaytaradi. Agar satrda pastki satr mavjud bo'lsa, u rostni qaytaradi, aks holda u yolg'onni qaytaradi.
+9. _includes()_: JavaScript’dagi includes() metodi — matn yoki massiv ichida ma’lum qiymat bor-yo‘qligini tekshiradi va true yoki false qaytaradi.
 
 ```js
-let string = "30 Days Of JavaScript";
-
-console.log(string.includes("Days")); // true
-console.log(string.includes("days")); // false - u katta harfga sezgir! Ya'ni katta va kichik harf bir hil emas deb qabul qiladi
-console.log(string.includes("Script")); // true
-console.log(string.includes("script")); // false
-console.log(string.includes("java")); // false
-console.log(string.includes("Java")); // true
-
-let country = "Finland";
-
-console.log(country.includes("fin")); // false
-console.log(country.includes("Fin")); // true
-console.log(country.includes("land")); // true
-console.log(country.includes("Land")); // false
+// Sintaksis:
+string.includes(searchValue, position);
 ```
 
-10. _replace()_: parametr sifatida eski va yangi pastki qatorni oladi. Almashtiradi eskini yangiga
+• searchValue → qidiriladigan matn yoki belgi. <br>
+• position (ixtiyoriy) → qayerdan boshlab qidirish (default = 0). <br>
+• Katta-kichik harf farqi bor ("A" va "a" turli hisoblanadi).
 
 ```js
-string.replace(oldsubstring, newsubstring);
+let text = "Hello World";
+console.log(text.includes("World")); // true
+console.log(text.includes("world")); // false (katta-kichik farqi bor)
+console.log(text.includes("Hello", 1)); // false (1-indexdan qidiradi)
 ```
+
+10. _replace()_: JavaScript’dagi replace() metodi — matn ichidagi mos keladigan birinchi topilgan qiymatni yangi qiymat bilan almashtiradi.
+
+Sintaksis
 
 ```js
-let string = "30 Days Of JavaScript";
-console.log(string.replace("JavaScript", "Python")); // 30 Days Of Python
-
-let country = "Finland";
-console.log(country.replace("Fin", "Noman")); // Nomanland
+string.replace(searchValue, newValue);
 ```
 
-11. _charAt()_: Indeksni oladi va u satrdan indeksdagi qiymatni qaytaradi
+• searchValue → qidiriladigan qiymat (matn yoki RegExp bo‘lishi mumkin). <br>
+• newValue → o‘rniga qo‘yiladigan matn.
+
+```js
+let text = "I like apples";
+let result = text.replace("apples", "oranges");
+console.log(result); // "I like oranges"
+```
+
+Topshiriq: 2003-08-10 Bu turadig sanani <b>10/08/2025</b> shu shakilga keltiring
+
+```js
+let date = "2003-08-10";
+let parts = date.split();
+let formatted = `${parts[2]}/${parts[1]}/${parts[0]}`;
+```
+
+11. _charAt()_: JavaScript’dagi charAt() metodi — matnning berilgan indeksidagi bitta belgini qaytaradi.
 
 ```js
 string.charAt(index);
 ```
 
-```js
-let string = "30 Days Of JavaScript";
-console.log(string.charAt(0)); // 3
+• index → qaysi belgini olish kerak (0 dan boshlanadi). <br>
+• Agar indeks matn uzunligidan katta yoki manfiy bo‘lsa, bo‘sh string ("") qaytaradi.
 
-let lastIndex = string.length - 1;
-console.log(string.charAt(lastIndex)); // t
+```js
+let text = "Hello";
+
+console.log(text.charAt(0)); // "H"
+console.log(text.charAt(1)); // "e"
+console.log(text.charAt(4)); // "o"
+console.log(text.charAt(5)); // "" (indeks yo‘q)
+
+// Misol
+let name = "john";
+let capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+console.log(capitalized); // "John"
 ```
 
 12. _charCodeAt()_: Indeksni oladi va u satrning indeksdagi qiymatning char kodini (ASCII raqami) qaytaradi
@@ -384,38 +430,67 @@ let lastIndex = string.length - 1;
 console.log(string.charCodeAt(lastIndex)); // t ASCII da 116-belgi
 ```
 
-13. _indexOf()_: Pastki satrni oladi va agar pastki satr satrda mavjud bo'lsa, u pastki satrning 1-pozitsiyasini qaytaradi, agar mavjud bo'lmasa, u -1 ni qaytaradi
+13. _indexOf()_: indexOf() — JavaScript’ta qator (string) yoki array ichida berilgan qiymatning birinchi uchragan indeksini (o‘rnini) qaytaradi.
+    Agar topilmasa, -1 qaytaradi.
+
+Sintaksisi
 
 ```js
-string.indexOf(substring);
+string.indexOf(qidirilayotganMatn, [boshlanishIndex]);
+array.indexOf(qidirilayotganElement, [boshlanishIndex]);
 ```
 
-```js
-let string = "30 Days Of JavaScript";
+• boshlanishIndex — majburiy emas, qidirishni qayerdan boshlashni bildiradi. <br>
+• Natija 0-based index bo‘ladi (ya’ni sanash 0 dan boshlanadi).
 
-console.log(string.indexOf("D")); // 3
-console.log(string.indexOf("Days")); // 3
-console.log(string.indexOf("days")); // -1
-console.log(string.indexOf("a")); // 4
-console.log(string.indexOf("JavaScript")); // 11
-console.log(string.indexOf("Script")); //15
-console.log(string.indexOf("script")); // -1
+String misoli
+
+```js
+let matn = "Salom dunyo";
+console.log(matn.indexOf("dunyo")); // 6
+console.log(matn.indexOf("Salom")); // 0
+console.log(matn.indexOf("JavaScript")); // -1
 ```
 
-14. _lastIndexOf()_: Pastki satrni oladi va agar pastki satr satrda mavjud bo'lsa, u pastki satrning oxirgi pozitsiyasini qaytaradi, agar u mavjud bo'lmasa, u -1 ni qaytaradi.
+Array misoli
 
 ```js
-//syntax
-string.lastIndexOf(substring);
+let mevalar = ["olma", "banan", "olcha", "olma"];
+console.log(mevalar.indexOf("olma")); // 0
+console.log(mevalar.indexOf("olma", 1)); // 3
+console.log(mevalar.indexOf("uzum")); // -1
 ```
 
-```js
-let string =
-  "I love JavaScript. If you do not love JavaScript what else can you love.";
+14. _lastIndexOf()_: lastIndexOf() — JavaScript’ta qator (string) yoki array ichida berilgan qiymatning oxirgi uchragan joyining indeksini qaytaradi.
+    Agar topilmasa, -1 qaytaradi.
 
-console.log(string.lastIndexOf("love")); // 67
-console.log(string.lastIndexOf("you")); // 63
-console.log(string.lastIndexOf("JavaScript")); // 38
+Farqi shundaki, indexOf() chapdan o‘ngga qarab qidiradi,
+lastIndexOf() esa o‘ngdan chapga qarab qidiradi.
+
+Sintaksis
+
+```js
+string.lastIndexOf(qidirilayotganMatn, [boshlanishIndex]);
+array.lastIndexOf(qidirilayotganElement, [boshlanishIndex]);
+```
+
+• boshlanishIndex — majburiy emas, qidirishni qayerdan boshlashni bildiradi (o‘ngdan chapga qarab). <br />
+• Natija 0-based index bo‘ladi.
+
+String misoli
+
+```js
+let matn = "JavaScript JavaScript";
+console.log(matn.lastIndexOf("JavaScript")); // 11
+console.log(matn.indexOf("JavaScript")); // 0
+```
+
+Array misoli
+
+```js
+let mevalar = ["olma", "banan", "olcha", "olma"];
+console.log(mevalar.lastIndexOf("olma")); // 3
+console.log(mevalar.indexOf("olma")); // 0
 ```
 
 15. _concat()_: u ko'plab pastki qatorlarni oladi va ularni birlashtiradi.
@@ -430,105 +505,6 @@ console.log(string.concat("Days", "Of", "JavaScript")); // 30DaysOfJavaScript
 
 let country = "Fin";
 console.log(country.concat("land")); // Finland
-```
-
-16. _startsWith_: u argument sifatida pastki qatorni oladi va satr o'sha ko'rsatilgan pastki qatordan boshlanishini tekshiradi. Bu mantiqiy (true yoki false) qaytaradi.
-
-```js
-//syntax
-string.startsWith(substring);
-```
-
-```js
-let string = "Love is the best to in this world";
-
-console.log(string.startsWith("Love")); // true
-console.log(string.startsWith("love")); // false
-console.log(string.startsWith("world")); // false
-
-let country = "Finland";
-
-console.log(country.startsWith("Fin")); // true
-console.log(country.startsWith("fin")); // false
-console.log(country.startsWith("land")); //  false
-```
-
-17. _endsWith_: u argument sifatida pastki qatorni oladi va satr o'sha ko'rsatilgan pastki qator bilan tugashini tekshiradi. Bu mantiqiy (true yoki false) qaytaradi.
-
-```js
-string.endsWith(substring);
-```
-
-```js
-let string = "Love is the most powerful feeling in the world";
-
-console.log(string.endsWith("world")); // true
-console.log(string.endsWith("love")); // false
-console.log(string.endsWith("in the world")); // true
-
-let country = "Finland";
-
-console.log(country.endsWith("land")); // true
-console.log(country.endsWith("fin")); // false
-console.log(country.endsWith("Fin")); //  false
-```
-
-18. _search_: u argument sifatida pastki qatorni oladi va u birinchi moslik indeksini qaytaradi. Qidiruv qiymati satr yoki oddiy ifoda namunasi bo'lishi mumkin.
-
-```js
-string.search(substring);
-```
-
-```js
-let string =
-  "I love JavaScript. If you do not love JavaScript what else can you love.";
-console.log(string.search("love")); // 2
-console.log(string.search(/javascript/gi)); // 7
-```
-
-19. _match_: u argument sifatida pastki satr yoki oddiy ifoda naqshini oladi va agar mos kelsa, massivni qaytaradi, agar bo'lmasa, u nullni qaytaradi. Keling, oddiy ifoda namunasi qanday ko'rinishini ko'rib chiqaylik. U / belgisi bilan boshlanadi va / belgisi bilan tugaydi.
-
-```js
-let string = "love";
-let patternOne = /love/; // har qanday bayroqsiz
-let patternTwo = /love/gi; // g-butun matn bo‘ylab qidirishni bildiradi, i - katta-kichik harf sezmaydi(2 sini ham bir hil deb qabul qiladi)
-```
-
-Match sintaksisi
-
-```js
-// syntax
-string.match(substring);
-```
-
-```js
-let string =
-  "I love JavaScript. If you do not love JavaScript what else can you love.";
-console.log(string.match("love"));
-```
-
-```sh
-["love", index: 2, input: "I love JavaScript. If you do not love JavaScript what else can you love.", groups: undefined]
-```
-
-```js
-let pattern = /love/gi;
-console.log(string.match(pattern)); // ["love", "love", "love"]
-```
-
-Muntazam ibora yordamida matndan raqamlarni ajratib olaylik. Bu Muntazam ifoda(Regular expression) bo'limi emas, vahima qilmang! Muntazam(Regular expression) iboralar haqida keyinroq toʻxtalamiz.
-
-```js
-let txt =
-  "In 2019, I ran 30 Days of Python. Now, in 2022 I am super exited to start this challenge";
-let regEx = /\d+/;
-
-// d escape belgisi bilan d oddiy emas, d o'rniga raqam ishlaydi
-// + bir yoki bir nechta raqamli sonlarni bildiradi,
-// agar undan keyin g bo'lsa, bu global degan ma'noni anglatadi, hamma joyda qidiring.
-
-console.log(txt.match(regEx)); // ["2", "0", "1", "9", "3", "0", "2", "0", "2", "0"]
-console.log(txt.match(/\d+/g)); // ["2019", "30", "2022"]
 ```
 
 20. _repeat()_: u argument sifatida raqamni oladi va satrning takroriy versiyasini qaytaradi.
