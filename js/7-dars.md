@@ -11,7 +11,7 @@ Funktsiya kodni quyidagi ko'rinishga keltirishga xizmat qiladi:
 
 - toza and o'qishga qulay
 - qayta foydalanish mumkin
-- testlashga oson 
+- testlashga oson
 
 Funktsiya bir necha usulda e'lon qilinishi yoki yaratilishi mumkin:
 
@@ -27,7 +27,7 @@ Keling, funktsiyani qanday e'lon qilishni va funktsiyani qanday chaqirishni ko'r
 ```js
 //funksiyani parametrsiz e'lon qilish
 function functionName() {
-  // kod shu yerda 
+  // kod shu yerda
 }
 functionName() // funksiyani nomi va qavslar bilan chaqirish
 ```
@@ -107,11 +107,11 @@ console.log(addTwoNumbers())
 Funktsiyada biz turli xil ma'lumotlar turlarini (raqam, satr, mantiqiy, ob'ekt, funktsiya) parametr sifatida o'tkazishimiz mumkin.
 
 ```js
-// bitta parametrli 
+// bitta parametrli
 function functionName(parm1) {
-  //kod shu yerda 
+  //kod shu yerda
 }
-functionName(parm1) // funksiyani chaqirish paytida bir argument berish kerak 
+functionName(parm1) // funksiyani chaqirish paytida bir argument berish kerak
 
 function areaOfCircle(r) {
   let area = Math.PI * r * r
@@ -133,7 +133,7 @@ console.log(square(10))
 ```js
 // ikkita parametrli funksiya
 function functionName(parm1, parm2) {
-  //kod shu yerda 
+  //kod shu yerda
 }
 functionName(parm1, parm2) // funksiyani chaqirish paytida ikkita argument berish kerak
 // Parametrsiz funktsiya kiritilmaydi, shuning uchun ruxsat beramiz parametrlari bilan
@@ -242,7 +242,7 @@ function sumAllNums() {
   console.log(arguments)
 }
 
-sumAllNums(1, 2, 3, 4) 
+sumAllNums(1, 2, 3, 4)
 // Arguments(4) [1, 2, 3, 4, callee: ƒ, Symbol(Symbol.iterator): ƒ]
 
 ```
@@ -349,7 +349,7 @@ Strelkali funksiya yozishga muqobildir, ammo oddiy funksiya va strelkali funksiy
 Strelkali funktsiyani e'lon qilish uchun _function_ kalit so'zi o'rniga o'q(strelkadan)dan foydalanadi . Keling, ikkala funktsiya oddiy funksiyani ham, o'q funksiyasini ham ko'rib chiqaylik.
 
 ```js
-// Oddiy yoki deklaratsiya funksiyasini shunday yozamiz 
+// Oddiy yoki deklaratsiya funksiyasini shunday yozamiz
 // Bu deklaratsiya funksiyasini strelkali funktsiyaga o'zgartiramiz
 function square(n) {
   return n * n
@@ -502,7 +502,7 @@ console.log('Age: ', calculateAge(1819))
 
 ```js
 const weightOfObject = (mass, gravity = 9.81) => mass * gravity + ' N'
-  
+
 console.log('Weight of an object in Newton: ', weightOfObject(100)) // 9.81 gravity at the surface of Earth
 console.log('Weight of an object in Newton: ', weightOfObject(100, 1.62)) // gravity at surface of Moon
 ```
@@ -515,11 +515,11 @@ Python yoki Java-ga o'xshash JavaScript try-catch-finally bloki yordamida ish va
 
 ```js
 try {
-  // xato berishi mumkin bo'lgan kod 
+  // xato berishi mumkin bo'lgan kod
 } catch (err) {
-  // xatolik yuz berganda bajariladigan kod 
+  // xatolik yuz berganda bajariladigan kod
 } finally {
-  // xatolik yuz bergan yoki bo'lmasligidan qat'iy nazar bajariladigan kod 
+  // xatolik yuz bergan yoki bo'lmasligidan qat'iy nazar bajariladigan kod
 }
 ```
 
@@ -550,7 +550,7 @@ try {
   let lastName = 'Yetayeh'
   let fullName = fistName + ' ' + lastName
 } catch (err) {
-  console.error(err) // biz console.log() yoki console.error() 
+  console.error(err) // biz console.log() yoki console.error()
 } finally {
   console.log('In any case I will be executed')
 }
@@ -585,9 +585,9 @@ In any case I will be executed
 throw: throw bayonoti bizga maxsus xato yaratish imkonini beradi. Biz satr, raqam, mantiqiy yoki ob'ekt orqali mumkin. Istisnoni tashlash uchun throw iborasidan foydalaning. Istisno qo'yganingizda, ifoda istisnoning qiymatini belgilaydi. Quyidagilarning har biri istisno qiladi:
 
 ```js
-throw 'Error2' // string qiymati bilan istisno hosil qiladi 
-throw 42 // qiymati bilan istisno hosil qiladi 
-throw true // qiymati bilan istisno hosil qiladi true 
+throw 'Error2' // string qiymati bilan istisno hosil qiladi
+throw 42 // qiymati bilan istisno hosil qiladi
+throw true // qiymati bilan istisno hosil qiladi true
 throw new Error('Required') // xato ob'ektini yaratadi. Majburiy xabar
 ```
 
@@ -667,4 +667,3 @@ Bular kod yozishda duch kelishi mumkin bo'lgan keng tarqalgan xatolardir. Xatola
 7. sumOfOdds funksiya nomini e'lon qiling . Bu raqam parametrini oladi va u diapazondagi barcha toq raqamlarni qo'shadi.
 
 8. sumOfEven funksiya nomini e'lon qiling . Bu raqam parametrini oladi va bu diapazondagi barcha juft raqamlarni qo'shadi.
-

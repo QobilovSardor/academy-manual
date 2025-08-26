@@ -1,135 +1,154 @@
-
 # 📔 8-dars
 
 ## Global and local variable scope(Qo'llanish doirasi)
 
+## 📌 1. Scope nima o‘zi?
 
-- Window
-- Global
-- Local
+Scope → o‘zgaruvchilar (variable), funksiyalar va obyektlarning qayerda ko‘rinishini va ishlatilishini belgilaydi.
 
-O'zgaruvchi global yoki mahalliy yoki oyna doirasida e'lon qilinishi mumkin. Biz global va mahalliy miqyosni ko'ramiz. Let, var yoki constsiz e'lon qilingan har qanday narsa oyna darajasida qamrab olinadi.
+👉 Ya’ni:
+• Qayerda e’lon qilganimizga qarab, o‘zgaruvchini qayerdan ishlata olamiz yoki ishlata olmaymiz.
 
-Tasavvur qilaylik, bizda scope.js fayli bor.
+### Scope turlari
 
-### Window (Qo'llanish doirasi)
+1. Global Scope
+2. Function Scope
+3. Block Scope
+4. Lexical Scope
+5. Module Scope
 
-console.log() dan foydalanmasdan brauzeringizni oching va tekshiring, agar brauzerda a yoki b yozsangiz, a va b qiymatini ko'rasiz. Bu oynada a va b allaqachon mavjud degan ma'noni anglatadi.
+### Global scope – bu dastur bo‘ylab hamma joydan foydalanish mumkin bo‘lgan o‘zgaruvchilar.
 
 ```js
-//scope.js
-a = 'JavaScript' // har qanday joyda topiladigan oyna doirasi 
-b = 10 // bu oyna doirasi o'zgaruvchisi 
-function letsLearnScope() {
-  console.log(a, b)
-  if (true) {
-    console.log(a, b)
+let globalVar = "Men globalman!"; // global scope
+
+function showGlobal() {
+  console.log(globalVar); // funksiyaning ichidan ham foydalanish mumkin
+}
+
+showGlobal();
+console.log(globalVar); // tashqaridan ham foydalanish mumkin
+```
+
+✅ Real hayotda: <br>
+• globalVar → xuddi uyingizdagi elektr tarmog‘iga o‘xshaydi. <br>
+• Butun uyda ishlaydi, lekin ehtiyot bo‘lish kerak ⚡️. Agar buzib qo‘ysangiz, hamma joyda muammo bo‘ladi.<br>
+
+### Local scope
+
+Local scope – bu faqat biror blok yoki funksiya ichida mavjud bo‘ladigan o‘zgaruvchilar.
+
+```js
+function myFunction() {
+  let localVar = "Men localman!";
+  console.log(localVar); // ishlaydi
+}
+
+myFunction();
+
+console.log(localVar); // ❌ Error! tashqaridan ko‘rinmaydi
+```
+
+✅ Real hayotda: <br>
+• localVar → xona ichidagi lampochka. Faqat o‘sha xonada yonadi, boshqa xonada ko‘rinmaydi.
+
+### Block scope (let va const)
+
+let va const bilan e’lon qilingan o‘zgaruvchilar faqat o‘z blokida ishlaydi.
+
+```js
+if (true) {
+  let blockVar = "Men blok ichidaman!";
+  console.log(blockVar); // ishlaydi
+}
+
+console.log(blockVar); // ❌ Error
+```
+
+⚠️ Lekin var bilan e’lon qilsak → block scope emas, function scope bo‘ladi.
+
+```js
+if (true) {
+  var testVar = "Men blockdan tashqarida ham ko‘rinaman!";
+}
+console.log(testVar); // ✅ ishlaydi
+```
+
+### Function scope
+
+var bilan e’lon qilingan o‘zgaruvchilar butun funksiya ichida ishlaydi, lekin tashqarida yo‘q.
+
+```js
+function testScope() {
+  var functionVar = "Men faqat function ichidaman!";
+  console.log(functionVar);
+}
+
+testScope();
+
+console.log(functionVar); // ❌ Error
+```
+
+### Lexical scope (ichki funksiyalar)
+
+```js
+function outer() {
+  let outerVar = "Tashqi o‘zgaruvchi";
+
+  function inner() {
+    console.log(outerVar); // ichki funksiya tashqi o‘zgaruvchini ko‘radi
   }
+
+  inner();
 }
-console.log(a, b) // chaqirish mumkin
+
+outer();
 ```
 
-### Global (Qo'llanish doirasi)
+### Global pollution muammosi
 
-Global e'lon qilingan o'zgaruvchiga bitta faylning hamma joyidan kirish mumkin. Ammo global atama nisbiydir. U fayl uchun global bo'lishi mumkin yoki ba'zi kodlar blokiga nisbatan global bo'lishi mumkin.
+Agar ko‘p global o‘zgaruvchi ishlatsak, ular bir-biriga to‘qnash kelishi mumkin.
 
 ```js
-//scope.js
-let a = 'JavaScript' //  global qamrov bu faylning istalgan joyidan topiladi 
-let b = 10 //  global qamrov bu fayl 
-function letsLearnScope() {
-  console.log(a, b) //  JavaScript 10, kirish mumkin 
-  if (true) {
-    let a = 'Python'
-    let b = 100
-    console.log(a, b) // Python 100
+var name = "Ali";
+var name = "Vali"; // eski qiymatni bosib ketadi ❌
+console.log(name); // Vali
+```
+
+### 📌 Xulosa:
+
+• var → eski, function scope
+• let va const → zamonaviy, block scope
+• Global scope – butun kod bo‘yicha ko‘rinadi
+• Local scope – faqat funksiya/blok ichida
+• Lexical scope → ichki funksiya tashqi o‘zgaruvchini ko‘radi
+• Closure → tashqi o‘zgaruvchini “eslab qolish”
+
+## Closure nima?
+
+Closure — bu funksiya o‘zini yaratgan tashqi funksiyaning scope’iga kirish imkoniyatini saqlab qolishi.
+Ya’ni, funksiya ichidagi funksiya tashqi o‘zgaruvchilardan foydalanishi mumkin — hatto tashqi funksiya allaqachon tugagan bo‘lsa ham.
+
+```js
+function outer() {
+  let count = 0; // tashqi scope'dagi o‘zgaruvchi
+
+  function inner() {
+    count++;
+    return count;
   }
-  console.log(a, b)
+
+  return inner;
 }
-letsLearnScope()
-console.log(a, b) // JavaScript 10, kirish mumkin
+
+const counter = outer();
+
+console.log(counter()); // 1
+console.log(counter()); // 2
+console.log(counter()); // 3
 ```
 
-### Local (Qo'llanish doirasi)
-
-Mahalliy deb e'lon qilingan o'zgaruvchiga faqat ma'lum blok kodida kirish mumkin.
-
-```js
-//scope.js
-let a = 'JavaScript' // global qamrov bu faylning istalgan joyidan topiladi 
-let b = 10 // global qamrov bu fayl 
-function letsLearnScope() {
-  console.log(a, b) //  JavaScript 10, kirish mumkin 
-  let value = false
-  if (true) {
-    // biz funksiyadan va funksiyadan tashqariga kira olamiz, lekin 
-    // if ichida eʼlon qilingan oʻzgaruvchilarga if blokidan tashqari kirish imkoni boʻlmaydi.
-    let a = 'Python'
-    let b = 20
-    let c = 30
-    let d = 40
-    value = !value
-    console.log(a, b, c) // Python 20 30
-  }
-  // biz c ga kira olmaymiz, chunki c ning qamrovi faqat if blok
-  console.log(a, b, value) // JavaScript 10 true
-}
-letsLearnScope()
-console.log(a, b) //  JavaScript 10, kirish mumkin 
-```
-
-Endi siz qamrov haqida tushunchaga egasiz. Var bilan e'lon qilingan o'zgaruvchi faqat funktsiya uchun mo'ljallangan, lekin let yoki const bilan e'lon qilingan o'zgaruvchi blok doirasi (funktsiya bloki, if bloki, sikl bloki va boshqalar). JavaScript-dagi blokirovka bu ikki jingalak qavs ({}) orasidagi koddir.
-
-```js
-//scope.js
-function letsLearnScope() {
-  var gravity = 9.81
-  console.log(gravity)
-
-}
-// console.log(gravity), Tugallanmagan ReferenceError: tortishish aniqlanmagan
-
-if (true){
-  var gravity = 9.81
-  console.log(gravity) // 9.81
-}
-console.log(gravity)  // 9.81
-
-for(var i = 0; i < 3; i++){
-  console.log(i) // 1, 2, 3
-}
-console.log(i)
-
-```
-
-ES6 va undan yuqori versiyalarda let va const mavjud, shuning uchun siz var ning hiyla-nayrangidan aziyat chekmaysiz . Biz ishlatganimizda let o'zgaruvchimiz bloklangan bo'ladi va u kodimizning boshqa qismlarini yuqtirmaydi.
-
-```js
-//scope.js
-function letsLearnScope() {
-  //  let yoki const dan foydalanishingiz mumkin, lekin tortishish kuchi doimiy Men const 
-  const gravity = 9.81
-  console.log(gravity)
-
-}
-// console.log(gravity), Tugallanmagan ReferenceError: tortishish aniqlanmagan
-
-if (true){
-  const  gravity = 9.81
-  console.log(gravity) // 9.81
-}
-// console.log(gravity),  Tugallanmagan ReferenceError: tortishish aniqlanmagan
-
-for(let i = 0; i < 3; i++){
-  console.log(i) // 1, 2, 3
-}
-// console.log(i), Tugallanmagan ReferenceError: i aniqlanmagan
-
-```
-
-Let va const doirasi bir xil. Farqi faqat qayta tayinlash. Biz const o'zgaruvchisining qiymatini o'zgartira olmaymiz yoki qayta tayinlay olmaymiz. Let va const dan foydalanishni qat'iy tavsiya qilaman, let va const dan foydalanib , siz toza kod yozasiz va disk raskadrovka qilish qiyin bo'lgan xatolardan qochasiz. Qoida tariqasida, har qanday o'zgaruvchan qiymat uchun let , har qanday doimiy qiymat uchun const va massiv, ob'ekt, o'q funktsiyasi va funksiya ifodasi uchun foydalanishingiz mumkin.
-
-##  Object
+## Object
 
 Hamma narsa ob'ekt bo'lishi mumkin va ob'ektlarning xususiyatlari va xususiyatlari qiymatlarga ega, shuning uchun ob'ekt kalit qiymat juftligidir. Kalitning tartibi zaxiralanmagan yoki buyurtma yo'q. Ob'ektning literalini yaratish uchun biz ikkita jingalak qavsdan foydalanamiz.
 
@@ -138,7 +157,7 @@ Hamma narsa ob'ekt bo'lishi mumkin va ob'ektlarning xususiyatlari va xususiyatla
 Bo'sh ob'ekt
 
 ```js
-const person = {}
+const person = {};
 ```
 
 ### Qiymatlar bilan Obyekt yaratish
@@ -150,29 +169,29 @@ Keling, ob'ektning ba'zi misollarini ko'rib chiqaylik. Har bir kalit ob'ektda qi
 ```js
 const rectangle = {
   length: 20,
-  width: 20
-}
-console.log(rectangle) // {length: 20, width: 20}
+  width: 20,
+};
+console.log(rectangle); // {length: 20, width: 20}
 
 const person = {
-  firstName: 'Asabeneh',
-  lastName: 'Yetayeh',
+  firstName: "Asabeneh",
+  lastName: "Yetayeh",
   age: 250,
-  country: 'Finland',
-  city: 'Helsinki',
+  country: "Finland",
+  city: "Helsinki",
   skills: [
-    'HTML',
-    'CSS',
-    'JavaScript',
-    'React',
-    'Node',
-    'MongoDB',
-    'Python',
-    'D3.js'
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React",
+    "Node",
+    "MongoDB",
+    "Python",
+    "D3.js",
   ],
-  isMarried: true
-}
-console.log(person)
+  isMarried: true,
+};
+console.log(person);
 ```
 
 ### Ob'ektdan qiymatlarni olish
@@ -184,42 +203,42 @@ Ob'ektning qiymatlariga ikkita usul yordamida kirishimiz mumkin:
 
 ```js
 const person = {
-  firstName: 'Asabeneh',
-  lastName: 'Yetayeh',
+  firstName: "Asabeneh",
+  lastName: "Yetayeh",
   age: 250,
-  country: 'Finland',
-  city: 'Helsinki',
+  country: "Finland",
+  city: "Helsinki",
   skills: [
-    'HTML',
-    'CSS',
-    'JavaScript',
-    'React',
-    'Node',
-    'MongoDB',
-    'Python',
-    'D3.js'
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React",
+    "Node",
+    "MongoDB",
+    "Python",
+    "D3.js",
   ],
-  getFullName: function() {
-    return `${this.firstName}${this.lastName}`
+  getFullName: function () {
+    return `${this.firstName}${this.lastName}`;
   },
-  'phone number': '+3584545454545'
-}
+  "phone number": "+3584545454545",
+};
 
-//  yordamida qiymatlarga kirish. 
-console.log(person.firstName)
-console.log(person.lastName)
-console.log(person.age)
-console.log(person.location)
+//  yordamida qiymatlarga kirish.
+console.log(person.firstName);
+console.log(person.lastName);
+console.log(person.age);
+console.log(person.location);
 
 // qiymatga kvadrat qavs va kalit nomi yordamida kirish mumkin
-console.log(person['firstName'])
-console.log(person['lastName'])
-console.log(person['age'])
-console.log(person['age'])
-console.log(person['location'])
+console.log(person["firstName"]);
+console.log(person["lastName"]);
+console.log(person["age"]);
+console.log(person["age"]);
+console.log(person["location"]);
 
 // masalan, telefon raqamiga kirish uchun biz faqat kvadrat qavs usulidan foydalanamiz
-console.log(person['phone number'])
+console.log(person["phone number"]);
 ```
 
 ### Ob'ekt methodlarini yaratish
@@ -229,27 +248,27 @@ Ob'ektga misol:
 
 ```js
 const person = {
-  firstName: 'Asabeneh',
-  lastName: 'Yetayeh',
+  firstName: "Asabeneh",
+  lastName: "Yetayeh",
   age: 250,
-  country: 'Finland',
-  city: 'Helsinki',
+  country: "Finland",
+  city: "Helsinki",
   skills: [
-    'HTML',
-    'CSS',
-    'JavaScript',
-    'React',
-    'Node',
-    'MongoDB',
-    'Python',
-    'D3.js'
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React",
+    "Node",
+    "MongoDB",
+    "Python",
+    "D3.js",
   ],
-  getFullName: function() {
-    return `${this.firstName} ${this.lastName}`
-  }
-}
+  getFullName: function () {
+    return `${this.firstName} ${this.lastName}`;
+  },
+};
 
-console.log(person.getFullName())
+console.log(person.getFullName());
 // Asabeneh Yetayeh
 ```
 
@@ -261,45 +280,45 @@ Ob'ektga yangi kalitlarni o'rnatish
 
 ```js
 const person = {
-  firstName: 'Asabeneh',
-  lastName: 'Yetayeh',
+  firstName: "Asabeneh",
+  lastName: "Yetayeh",
   age: 250,
-  country: 'Finland',
-  city: 'Helsinki',
+  country: "Finland",
+  city: "Helsinki",
   skills: [
-    'HTML',
-    'CSS',
-    'JavaScript',
-    'React',
-    'Node',
-    'MongoDB',
-    'Python',
-    'D3.js'
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React",
+    "Node",
+    "MongoDB",
+    "Python",
+    "D3.js",
   ],
-  getFullName: function() {
-    return `${this.firstName} ${this.lastName}`
-  }
-}
-person.nationality = 'Ethiopian'
-person.country = 'Finland'
-person.title = 'teacher'
-person.skills.push('Meteor')
-person.skills.push('SasS')
-person.isMarried = true
+  getFullName: function () {
+    return `${this.firstName} ${this.lastName}`;
+  },
+};
+person.nationality = "Ethiopian";
+person.country = "Finland";
+person.title = "teacher";
+person.skills.push("Meteor");
+person.skills.push("SasS");
+person.isMarried = true;
 
-person.getPersonInfo = function() {
+person.getPersonInfo = function () {
   let skillsWithoutLastSkill = this.skills
     .splice(0, this.skills.length - 1)
-    .join(', ')
-  let lastSkill = this.skills.splice(this.skills.length - 1)[0]
+    .join(", ");
+  let lastSkill = this.skills.splice(this.skills.length - 1)[0];
 
-  let skills = `${skillsWithoutLastSkill}, and ${lastSkill}`
-  let fullName = this.getFullName()
-  let statement = `${fullName} is a ${this.title}.\nHe lives in ${this.country}.\nHe teaches ${skills}.`
-  return statement
-}
-console.log(person)
-console.log(person.getPersonInfo())
+  let skills = `${skillsWithoutLastSkill}, and ${lastSkill}`;
+  let fullName = this.getFullName();
+  let statement = `${fullName} is a ${this.title}.\nHe lives in ${this.country}.\nHe teaches ${skills}.`;
+  return statement;
+};
+console.log(person);
+console.log(person.getPersonInfo());
 ```
 
 ```sh
@@ -312,31 +331,31 @@ He teaches HTML, CSS, JavaScript, React, Node, MongoDB, Python, D3.js, Meteor, a
 
 Ob'ektni manipulyatsiya qilishning turli usullari mavjud. Keling, ba'zi mavjud usullarni ko'rib chiqaylik.
 
-_Object.assign_:  Asl ob'ektni o'zgartirmasdan ob'ektni nusxalash uchun
+_Object.assign_: Asl ob'ektni o'zgartirmasdan ob'ektni nusxalash uchun
 
 ```js
 const person = {
-  firstName: 'Asabeneh',
+  firstName: "Asabeneh",
   age: 250,
-  country: 'Finland',
-  city:'Helsinki',
-  skills: ['HTML', 'CSS', 'JS'],
-  title: 'teacher',
+  country: "Finland",
+  city: "Helsinki",
+  skills: ["HTML", "CSS", "JS"],
+  title: "teacher",
   address: {
-    street: 'Heitamienkatu 16',
+    street: "Heitamienkatu 16",
     pobox: 2002,
-    city: 'Helsinki'
+    city: "Helsinki",
   },
-  getPersonInfo: function() {
-    return `I am ${this.firstName} and I live in ${this.city}, ${this.country}. I am ${this.age}.`
-  }
-}
+  getPersonInfo: function () {
+    return `I am ${this.firstName} and I live in ${this.city}, ${this.country}. I am ${this.age}.`;
+  },
+};
 
 //Obyekt methodlari: Object.assign, Object.keys, Object.values, Object.entries
 //hasOwnProperty
 
-const copyPerson = Object.assign({}, person)
-console.log(copyPerson)
+const copyPerson = Object.assign({}, person);
+console.log(copyPerson);
 ```
 
 #### Object.keys() yordamida obyekt kalitlarini olish
@@ -344,10 +363,10 @@ console.log(copyPerson)
 _Object.keys_: Ob'ektning kalitlari yoki xususiyatlarini massiv sifatida olish uchun
 
 ```js
-const keys = Object.keys(copyPerson)
-console.log(keys) //['name', 'age', 'country', 'skills', 'address', 'getPersonInfo']
-const address = Object.keys(copyPerson.address)
-console.log(address) //['street', 'pobox', 'city']
+const keys = Object.keys(copyPerson);
+console.log(keys); //['name', 'age', 'country', 'skills', 'address', 'getPersonInfo']
+const address = Object.keys(copyPerson.address);
+console.log(address); //['street', 'pobox', 'city']
 ```
 
 #### Object.values() yordamida obyekt qiymatlarini olish
@@ -355,8 +374,8 @@ console.log(address) //['street', 'pobox', 'city']
 _Object.values_: Ob'ektning qiymatlarini massiv sifatida olish uchun
 
 ```js
-const values = Object.values(copyPerson)
-console.log(values)
+const values = Object.values(copyPerson);
+console.log(values);
 ```
 
 #### Object.entries() yordamida obyekt kalitlari va qiymatlarini olish
@@ -364,8 +383,8 @@ console.log(values)
 _Object.entries_: Massivdagi kalit va qiymatlarni olish uchun
 
 ```js
-const entries = Object.entries(copyPerson)
-console.log(entries)
+const entries = Object.entries(copyPerson);
+console.log(entries);
 ```
 
 #### hasOwnProperty() yordamida xususiyatlarni tekshirish
@@ -373,8 +392,8 @@ console.log(entries)
 _hasOwnProperty_: ob'ektda ma'lum bir kalit yoki xususiyat mavjudligini tekshirish uchun
 
 ```js
-console.log(copyPerson.hasOwnProperty('name'))
-console.log(copyPerson.hasOwnProperty('score'))
+console.log(copyPerson.hasOwnProperty("name"));
+console.log(copyPerson.hasOwnProperty("score"));
 ```
 
 ## Savol?
@@ -386,8 +405,10 @@ const arr2 = [1, 2, 3, 4];
 arr1 == arr2; // ?
 // Ikkita birhil ojbect bir biriga teng bo'ladimi?
 ```
+
 #### Javob
-Yoq ikkita birhil object bir biriga teng bo'la olmaydi! Sababi ikkita obj har safar create bo'lganda memoriyda joy oldai va o'sha joyning adresi bo'ladi shunda codimiz qanaqa o'qiladi? Codimiz o'qilayotganda objning valuesi emas balki memoriyning adresi bir biri bilan solishtiriladi va ikkala memoriyning adresi harxil chiqadi shuning uchun ikkala object bir biri bilan teng bo'la olmaydi! 
+
+Yoq ikkita birhil object bir biriga teng bo'la olmaydi! Sababi ikkita obj har safar create bo'lganda memoriyda joy oldai va o'sha joyning adresi bo'ladi shunda codimiz qanaqa o'qiladi? Codimiz o'qilayotganda objning valuesi emas balki memoriyning adresi bir biri bilan solishtiriladi va ikkala memoriyning adresi harxil chiqadi shuning uchun ikkala object bir biri bilan teng bo'la olmaydi!
 
 ## Yuqori tartibli funktsiya
 
@@ -418,26 +439,27 @@ Higher order funksiyalarari qiymat sifatida funksiya qaytaradi
 
 ```js
 // Higher order funksiyasi boshqa bir funksiyani qaytarayapti
-const higherOrder = n => {
-  const doSomething = m => {
-    const doWhatEver = t => {
-      return 2 * n + 3 * m + t
-    }
-    return doWhatEver
-  }
-  return doSomething
-}
-console.log(higherOrder(2)(3)(10))
+const higherOrder = (n) => {
+  const doSomething = (m) => {
+    const doWhatEver = (t) => {
+      return 2 * n + 3 * m + t;
+    };
+    return doWhatEver;
+  };
+  return doSomething;
+};
+console.log(higherOrder(2)(3)(10));
 ```
+
 higherOrder - bu yuqori tartibdagi funksiya, uning parametri n. U doSomething funksiyasini qaytaradi.
 doSomething - bu ham yuqori tartibdagi funksiya, uning parametri m. U esa doWhatEver funksiyasini qaytaradi.
-doWhatEver - bu ham yuqori tartibdagi funksiya, uning parametri t. U esa 2 * n + 3 * m + t formulasi bilan hisoblashni amalga oshiradi.
+doWhatEver - bu ham yuqori tartibdagi funksiya, uning parametri t. U esa 2 _ n + 3 _ m + t formulasi bilan hisoblashni amalga oshiradi.
 Yuqoridagi funksiyalar ketma-ketligi natijasida, o'zgartirilgan qiymatlarni qabul qilib, doWhatEver funksiyasini chaqirish orqali o'z ichiga olgan formulani hisoblaydi. Natijada, higherOrder(2)(3)(10) qilganda 2, 3 va 10 qiymatlari orqali hisoblangan natija 23 bo'ladi.
 
 n qiymati 2 ga teng.
 m qiymati 3 ga teng.
 t qiymati 10 ga teng.
-Shu bilan, 2 * 2 + 3 * 3 + 10 formulasi natijasida 23 chiqadi. Natijada, higherOrder(2)(3)(10) ifodasi 23 ga teng bo'ladi.
+Shu bilan, 2 _ 2 + 3 _ 3 + 10 formulasi natijasida 23 chiqadi. Natijada, higherOrder(2)(3)(10) ifodasi 23 ga teng bo'ladi.
 
 Callback funksiyalaridan foydalanganimizni ko'rib chiqaylik. Masalan, _**forEach**_ methodi qayta `callback`dan foydalanadi.
 
@@ -496,14 +518,14 @@ JavaScript-da biz ma'lum vaqt oralig'ida doimiy ravishda ba'zi harakatlarni baja
 function callback() {
   // code goes here
 }
-setInterval(callback, duration)
+setInterval(callback, duration);
 ```
 
 ```js
 function sayHello() {
-  console.log('Hello')
+  console.log("Hello");
 }
-setInterval(sayHello, 1000) // u har soniyada 'Hello' chop etadi, 1000ms = 1sekund
+setInterval(sayHello, 1000); // u har soniyada 'Hello' chop etadi, 1000ms = 1sekund
 ```
 
 #### SetTimeout yordamida vaqtni belgilash
@@ -515,14 +537,14 @@ JavaScript-da biz kelajakda biron bir amalni bajarish uchun setTimeout yuqori ta
 function callback() {
   // code goes here
 }
-setTimeout(callback, duration) // duration(davomiyligi) millisekundlarda
+setTimeout(callback, duration); // duration(davomiyligi) millisekundlarda
 ```
 
 ```js
 function sayHello() {
-  console.log('Hello')
+  console.log("Hello");
 }
-setTimeout(sayHello, 2000) // u 2 soniya kutgandan so'ng 'Hello' chop etadi.
+setTimeout(sayHello, 2000); // u 2 soniya kutgandan so'ng 'Hello' chop etadi.
 ```
 
 ## Funktsional dasturlash
@@ -535,21 +557,21 @@ _forEach_: massiv elementlarini takrorlash. Biz forEach dan faqat massivlar bila
 
 ```js
 arr.forEach(function (element, index, arr) {
-  console.log(index, element, arr)
-})
+  console.log(index, element, arr);
+});
 // Yuqoridagi kodni o'q funktsiyasi yordamida yozish mumkin
 arr.forEach((element, index, arr) => {
-  console.log(index, element, arr)
-})
+  console.log(index, element, arr);
+});
 // Yuqoridagi kod o'q funktsiyasi va aniq qaytish yordamida yozilishi mumkin
-arr.forEach((element, index, arr) => console.log(index, element, arr))
+arr.forEach((element, index, arr) => console.log(index, element, arr));
 ```
 
 ```js
 let sum = 0;
 const numbers = [1, 2, 3, 4, 5];
-numbers.forEach(num => console.log(num))
-console.log(sum)
+numbers.forEach((num) => console.log(num));
+console.log(sum);
 ```
 
 ```sh
@@ -563,9 +585,9 @@ console.log(sum)
 ```js
 let sum = 0;
 const numbers = [1, 2, 3, 4, 5];
-numbers.forEach(num => sum += num)
+numbers.forEach((num) => (sum += num));
 
-console.log(sum)
+console.log(sum);
 ```
 
 ```sh
@@ -573,8 +595,8 @@ console.log(sum)
 ```
 
 ```js
-const countries = ['Finland', 'Denmark', 'Sweden', 'Norway', 'Iceland']
-countries.forEach((element) => console.log(element.toUpperCase()))
+const countries = ["Finland", "Denmark", "Sweden", "Norway", "Iceland"];
+countries.forEach((element) => console.log(element.toUpperCase()));
 ```
 
 ```sh
@@ -591,8 +613,8 @@ _map_: massiv elementlarini takrorlash va massiv elementlarini o‘zgartirish. U
 
 ```js
 const modifiedArray = arr.map(function (element, index, arr) {
-  return element
-})
+  return element;
+});
 ```
 
 ```js
@@ -600,10 +622,10 @@ const modifiedArray = arr.map(function (element, index, arr) {
 const modifiedArray = arr.map((element,index) => element);
 */
 //Misol
-const numbers = [1, 2, 3, 4, 5]
-const numbersSquare = numbers.map((num) => num * num)
+const numbers = [1, 2, 3, 4, 5];
+const numbersSquare = numbers.map((num) => num * num);
 
-console.log(numbersSquare)
+console.log(numbersSquare);
 ```
 
 ```sh
@@ -611,9 +633,9 @@ console.log(numbersSquare)
 ```
 
 ```js
-const names = ['Asabeneh', 'Mathias', 'Elias', 'Brook']
-const namesToUpperCase = names.map((name) => name.toUpperCase())
-console.log(namesToUpperCase)
+const names = ["Asabeneh", "Mathias", "Elias", "Brook"];
+const namesToUpperCase = names.map((name) => name.toUpperCase());
+console.log(namesToUpperCase);
 ```
 
 ```sh
@@ -622,20 +644,20 @@ console.log(namesToUpperCase)
 
 ```js
 const countries = [
-  'Albania',
-  'Bolivia',
-  'Canada',
-  'Denmark',
-  'Ethiopia',
-  'Finland',
-  'Germany',
-  'Hungary',
-  'Ireland',
-  'Japan',
-  'Kenya',
-]
-const countriesToUpperCase = countries.map((country) => country.toUpperCase())
-console.log(countriesToUpperCase)
+  "Albania",
+  "Bolivia",
+  "Canada",
+  "Denmark",
+  "Ethiopia",
+  "Finland",
+  "Germany",
+  "Hungary",
+  "Ireland",
+  "Japan",
+  "Kenya",
+];
+const countriesToUpperCase = countries.map((country) => country.toUpperCase());
+console.log(countriesToUpperCase);
 
 /*
 // Strelkali funksiya
@@ -654,7 +676,7 @@ const countriesToUpperCase = countries.map(country => country.toUpperCase());
 ```js
 const countriesFirstThreeLetters = countries.map((country) =>
   country.toUpperCase().slice(0, 3)
-)
+);
 ```
 
 ```sh
@@ -662,7 +684,7 @@ const countriesFirstThreeLetters = countries.map((country) =>
 ```
 
 **forEach va map massiv elementlari bilan ishlashda foydalaniladigan JavaScript array metodlari. Ularning farqini quyidagicha:**
-Map yangi massiv qaytaradi eski massivni qiymatini o'zgartirib 
+Map yangi massiv qaytaradi eski massivni qiymatini o'zgartirib
 **Qaytari:**
 
 forEach: Bu metod undefined qaytaradi. U bitta elementni chaqiradi va biror nima qaytarmaydi.
@@ -677,18 +699,17 @@ map: Bu metod esa yangi bir array yaratish uchun ishlatiladi, bu array orqali am
 // forEach
 const numbers = [1, 2, 3, 4];
 
-const result = numbers.forEach(function(element, index) {
+const result = numbers.forEach(function (element, index) {
   console.log(`Element: ${element}, Index: ${index}`);
 });
 
 console.log(result); //  Output: undefined
 
 // map
-const doubledNumbers = numbers.map(function(element, index) {
+const doubledNumbers = numbers.map(function (element, index) {
   return element * 2;
 });
 console.log(doubledNumbers); // Output: [2, 4, 6, 8]
-
 ```
 
 ### filter
@@ -699,11 +720,11 @@ _Filter_: filter JavaScript array metodidir va u massivni filtirlash uchun ishla
 const numbers = [1, 2, 3, 4, 5, 6];
 
 // Odd numbers ni olish
-const oddNumbers = numbers.filter(function(element) {
+const oddNumbers = numbers.filter(function (element) {
   return element % 2 !== 0;
 });
 
-console.log(oddNumbers); 
+console.log(oddNumbers);
 ```
 
 ```sh
@@ -711,9 +732,21 @@ console.log(oddNumbers);
 ```
 
 ```js
-const countries = ['Albania', 'Argentina', 'Australia', 'Austria', 'Bulgaria', 'Cambodia', 'India', 'Hitoy', 'Jamaica', 'Japan', 'Korea'];
+const countries = [
+  "Albania",
+  "Argentina",
+  "Australia",
+  "Austria",
+  "Bulgaria",
+  "Cambodia",
+  "India",
+  "Hitoy",
+  "Jamaica",
+  "Japan",
+  "Korea",
+];
 
-const countriesEndsByia = countries.filter((country) => country.endsWith('ia'));
+const countriesEndsByia = countries.filter((country) => country.endsWith("ia"));
 
 console.log(countriesEndsByia);
 ```
@@ -725,8 +758,8 @@ console.log(countriesEndsByia);
 ```js
 const countriesHaveFiveLetters = countries.filter(
   (country) => country.length === 5
-)
-console.log(countriesHaveFiveLetters)
+);
+console.log(countriesHaveFiveLetters);
 ```
 
 ```sh
@@ -735,16 +768,16 @@ console.log(countriesHaveFiveLetters)
 
 ```js
 const scores = [
-  { name: 'Asabeneh', score: 95 },
-   { name: 'Lidiya', score: 98 },
-  { name: 'Mathias', score: 80 },
-  { name: 'Elias', score: 50 },
-  { name: 'Martha', score: 85 },
-  { name: 'John', score: 100 },
-]
+  { name: "Asabeneh", score: 95 },
+  { name: "Lidiya", score: 98 },
+  { name: "Mathias", score: 80 },
+  { name: "Elias", score: 50 },
+  { name: "Martha", score: 85 },
+  { name: "John", score: 100 },
+];
 
-const scoresGreaterEight = scores.filter((score) => score.score > 80)
-console.log(scoresGreaterEight)
+const scoresGreaterEight = scores.filter((score) => score.score > 80);
+console.log(scoresGreaterEight);
 ```
 
 ```sh
@@ -772,27 +805,26 @@ const products = [
 ];
 
 let sum = products.reduce((acumlator, curentValue) => {
-  return acumlator + curentValue.price
+  return acumlator + curentValue.price;
 }, 0);
 console.log(sum);
 
-
 const items = [
-  { name: 'Apple', category: 'Fruit' },
-  { name: 'Onion', category: 'Vegetable' },
-  { name: 'Orange', category: 'Fruit' },
-  { name: 'Lettuce', category: 'Vegetable' },
+  { name: "Apple", category: "Fruit" },
+  { name: "Onion", category: "Vegetable" },
+  { name: "Orange", category: "Fruit" },
+  { name: "Lettuce", category: "Vegetable" },
 ];
 
 const groupedItems = items.reduce((accumulator, item) => {
   const category = item.category;
-  console.log(accumulator[category], 's')
-  if(!accumulator[category]){
-    accumulator[category] = []
+  console.log(accumulator[category], "s");
+  if (!accumulator[category]) {
+    accumulator[category] = [];
   }
-  accumulator[category].push(item.name)
-  return accumulator
-}, {})
+  accumulator[category].push(item.name);
+  return accumulator;
+}, {});
 
 console.log(groupedItems);
 ```
@@ -802,10 +834,10 @@ console.log(groupedItems);
 _every_: Barcha elementlarning bir jihatda oʻxshashligini tekshiring. Bu booleanni qaytaradi
 
 ```js
-const names = ['Asabeneh', 'Mathias', 'Elias', 'Brook']
-const areAllStr = names.every((name) => typeof name === 'string') // Are all strings?
+const names = ["Asabeneh", "Mathias", "Elias", "Brook"];
+const areAllStr = names.every((name) => typeof name === "string"); // Are all strings?
 
-console.log(arrAllStr)
+console.log(arrAllStr);
 ```
 
 ```sh
@@ -813,10 +845,10 @@ true
 ```
 
 ```js
-const bools = [true, true, true, true]
-const areAllTrue = bools.every((b) => b === true) // Hammasi rostmi?
+const bools = [true, true, true, true];
+const areAllTrue = bools.every((b) => b === true); // Hammasi rostmi?
 
-console.log(areAllTrue) // rost
+console.log(areAllTrue); // rost
 ```
 
 ```sh
@@ -829,20 +861,20 @@ true
 _find_: Shartni qondiradigan birinchi elementni qaytaring
 
 ```js
-const ages = [24, 22, 25, 32, 35, 18]
-const age = ages.find((age) => age < 20)
+const ages = [24, 22, 25, 32, 35, 18];
+const age = ages.find((age) => age < 20);
 
-console.log(age)
+console.log(age);
 ```
 
 ```js
-18
+18;
 ```
 
 ```js
-const names = ['Asabeneh', 'Mathias', 'Elias', 'Brook']
-const result = names.find((name) => name.length > 7)
-console.log(result)
+const names = ["Asabeneh", "Mathias", "Elias", "Brook"];
+const result = names.find((name) => name.length > 7);
+console.log(result);
 ```
 
 ```sh
@@ -851,15 +883,15 @@ Asabeneh
 
 ```js
 const scores = [
-  { name: 'Asabeneh', score: 95 },
-  { name: 'Mathias', score: 80 },
-  { name: 'Elias', score: 50 },
-  { name: 'Martha', score: 85 },
-  { name: 'John', score: 100 },
-]
+  { name: "Asabeneh", score: 95 },
+  { name: "Mathias", score: 80 },
+  { name: "Elias", score: 50 },
+  { name: "Martha", score: 85 },
+  { name: "John", score: 100 },
+];
 
-const score = scores.find((user) => user.score > 80)
-console.log(score)
+const score = scores.find((user) => user.score > 80);
+console.log(score);
 ```
 
 ```sh
@@ -871,14 +903,14 @@ console.log(score)
 _findIndex_: Shartni qondiradigan birinchi elementning o'rnini qaytaring
 
 ```js
-const names = ['Asabeneh', 'Mathias', 'Elias', 'Brook']
-const ages = [24, 22, 25, 32, 35, 18]
+const names = ["Asabeneh", "Mathias", "Elias", "Brook"];
+const ages = [24, 22, 25, 32, 35, 18];
 
-const result = names.findIndex((name) => name.length > 7)
-console.log(result) // 0
+const result = names.findIndex((name) => name.length > 7);
+console.log(result); // 0
 
-const age = ages.findIndex((age) => age < 20)
-console.log(age) // 5
+const age = ages.findIndex((age) => age < 20);
+console.log(age); // 5
 ```
 
 ### some
@@ -886,17 +918,17 @@ console.log(age) // 5
 _some_: Ba'zi elementlarning bir jihati bilan o'xshashligini tekshiring. Bu booleanni qaytaradi
 
 ```js
-const names = ['Asabeneh', 'Mathias', 'Elias', 'Brook']
-const bools = [true, true, true, true]
+const names = ["Asabeneh", "Mathias", "Elias", "Brook"];
+const bools = [true, true, true, true];
 
-const areSomeTrue = bools.some((b) =>  b === true)
+const areSomeTrue = bools.some((b) => b === true);
 
-console.log(areSomeTrue) //true
+console.log(areSomeTrue); //true
 ```
 
 ```js
-const areAllStr = names.some((name) => typeof name === 'number') // Are all strings ?
-console.log(areAllStr) // false
+const areAllStr = names.some((name) => typeof name === "number"); // Are all strings ?
+console.log(areAllStr); // false
 ```
 
 ### sort
@@ -906,8 +938,8 @@ _sort_: Saralash usullari massiv elementlarini o'sish yoki kamayish tartibida ta
 #### Satr qiymatlarini saralash
 
 ```js
-const products = ['Milk', 'Coffee', 'Sugar', 'Honey', 'Apple', 'Carrot']
-console.log(products.sort()) // ['Apple', 'Carrot', 'Coffee', 'Honey', 'Milk', 'Sugar']
+const products = ["Milk", "Coffee", "Sugar", "Honey", "Apple", "Carrot"];
+console.log(products.sort()); // ['Apple', 'Carrot', 'Coffee', 'Honey', 'Milk', 'Sugar']
 //Endi asl mahsulotlar qatori ham tartiblangan
 ```
 
@@ -916,19 +948,19 @@ console.log(products.sort()) // ['Apple', 'Carrot', 'Coffee', 'Honey', 'Milk', '
 Quyidagi misolda ko'rib turganingizdek, o'sish tartibida tartiblangandan keyin 100 birinchi bo'ldi. Saralash elementni string ga o'zgartiradi, chunki '100' va boshqa raqamlar taqqoslangan, '100' qatorining boshi eng kichik bo'lgan 1. Bunga yo'l qo'ymaslik uchun biz tartiblash usuli ichida manfiy, nol yoki musbat qaytaruvchi solishtirma qo'ng'iroq funksiyasidan foydalanamiz.
 
 ```js
-const numbers = [9.81, 3.14, 100, 37]
+const numbers = [9.81, 3.14, 100, 37];
 // Raqamli elementlarni tartiblash uchun sort usulidan foydalanish noto'g'ri natija beradi. pastga qarang
-console.log(numbers.sort()) //[100, 3.14, 37, 9.81]
+console.log(numbers.sort()); //[100, 3.14, 37, 9.81]
 numbers.sort(function (a, b) {
-  return a - b
-})
+  return a - b;
+});
 
-console.log(numbers) // [3.14, 9.81, 37, 100]
+console.log(numbers); // [3.14, 9.81, 37, 100]
 
 numbers.sort(function (a, b) {
-  return b - a
-})
-console.log(numbers) //[100, 37, 9.81, 3.14]
+  return b - a;
+});
+console.log(numbers); //[100, 37, 9.81, 3.14]
 ```
 
 #### Obyektli massivlarni saralash
@@ -937,34 +969,30 @@ Biz ob'ektlarni massivda saralaganimizda. Taqqoslash uchun obyekt tugmasidan foy
 
 ```js
 objArr.sort(function (a, b) {
-  if (a.key < b.key) return -1
-  if (a.key > b.key) return 1
-  return 0
-})
+  if (a.key < b.key) return -1;
+  if (a.key > b.key) return 1;
+  return 0;
+});
 
 // or
 
 objArr.sort(function (a, b) {
-  if (a['key'] < b['key']) return -1
-  if (a['key'] > b['key']) return 1
-  return 0
-})
+  if (a["key"] < b["key"]) return -1;
+  if (a["key"] > b["key"]) return 1;
+  return 0;
+});
 
 const users = [
-  { name: 'Asabeneh', age: 150 },
-  { name: 'Brook', age: 50 },
-  { name: 'Eyo', age: 100 },
-  { name: 'Elias', age: 22 },
-]
+  { name: "Asabeneh", age: 150 },
+  { name: "Brook", age: 50 },
+  { name: "Eyo", age: 100 },
+  { name: "Elias", age: 22 },
+];
 users.sort((a, b) => {
-  if (a.age < b.age) return -1
-  if (a.age > b.age) return 1
-  return 0
-})
-console.log(users) // ortib borishda tartiblangan
+  if (a.age < b.age) return -1;
+  if (a.age > b.age) return 1;
+  return 0;
+});
+console.log(users); // ortib borishda tartiblangan
 // [{…}, {…}, {…}, {…}]
 ```
-
-
-
-
